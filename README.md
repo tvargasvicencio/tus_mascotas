@@ -5,11 +5,11 @@ A Symfony project created on December 22, 2020, 3:03 am.
 
 ToDo List:
 
-- Configurar DB
-- Crear tablas
+- Configurar DB [LISTO]
+- Crear tablas  [LISTO]
 - Incorporar sistema de login
 - Integrar Bootstrap 4
-- Crear manú lateral
+- Crear menú lateral
 - CRUD de mascotas
   - Usar formularios de Symfony
   - Validar RUT
