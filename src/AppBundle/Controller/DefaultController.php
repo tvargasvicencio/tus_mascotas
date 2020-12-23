@@ -55,7 +55,12 @@ class DefaultController extends Controller
                 ],
             ])
             ->add('color', TextType::class)
-            ->add('fechaNacimiento', DateType::class)
+            ->add('fechaNacimiento', TextType::class, [
+                'attr' => [
+                    'class' => 'js-datepicker',
+                    'autocomplete' => "off"
+                ],
+            ])
             ->add('raza', TextType::class)
             ->add('esterilizada', CheckboxType::class, [
                 'required' => false
@@ -74,6 +79,7 @@ class DefaultController extends Controller
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $mascota = $form->getData();
+                $mascota->setFechaNacimiento(new \DateTime($request->request->get('fechaNacimiento')));
                 $mascota->setFechaRegistro(new \DateTime('NOW'));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($mascota);

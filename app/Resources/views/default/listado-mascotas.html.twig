@@ -27,7 +27,7 @@
                 <td>{{tipoMascota(mascota.tipo)}}</td>
                 <td>{{sexoMascota(mascota.sexo)}}</td>
                 <td>{{mascota.raza}}</td>
-                <td>{{mascota.fecha_registro}}</td>
+                <td>{{mascota.fecha_registro|date("d/m/Y")}}</td>
                 <td>{{mascota.nombre_humano}}</td>
                 <td></td>
                 <td hidden>{{mascota.rut_humano}}</td>
