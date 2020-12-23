@@ -97,6 +97,12 @@ class Mascota
      */
     private $humanoId;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="datetime")
+     */
+    private $fechaRegistro;
 
     /**
      * Get id
@@ -370,6 +376,30 @@ class Mascota
     public function getHumanoId()
     {
         return $this->humanoId;
+    }
+
+    /**
+     * Set fechaRegistro
+     *
+     * @param \DateTime $fechaRegistro
+     *
+     * @return Mascota
+     */
+    public function setFechaRegistro($fechaRegistro)
+    {
+        $this->fechaRegistro = $fechaRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRegistro
+     *
+     * @return \DateTime
+     */
+    public function getFechaRegistro()
+    {
+        return $this->fechaRegistro;
     }
 }
 

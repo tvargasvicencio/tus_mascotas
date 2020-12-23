@@ -75,6 +75,7 @@ class DefaultController extends Controller
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $mascota = $form->getData();
+                $mascota->setFechaRegistro(new \DateTime('NOW'));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($mascota);
                 $entityManager->flush();
