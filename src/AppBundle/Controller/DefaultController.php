@@ -17,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 class DefaultController extends Controller
 {
     /**
@@ -119,5 +121,33 @@ class DefaultController extends Controller
         return $this->render('default/listado-mascotas.html.twig', [
             'mascotas' => $mascotas
         ]);
+    }
+
+    /**
+     * @Route("/api/1.0/mascota/{chip}", name="api_mascota")
+     */
+    public function apiMascota($chip)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = "SELECT *
+            FROM mascota m 
+            WHERE m.chip = '{$chip}' ;";
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute();
+        $mascota = $statement->fetch();
+
+        if ($mascota == null) {
+            $response = new JsonResponse([
+                'mascota'=>null, 
+                'msg' => 'Mascota no encontrada'
+            ]);
+            return $response;
+        }
+
+        $response = new JsonResponse([
+            'mascota' => $mascota,
+            'msg' => 'Mascota encontrada'
+        ]);
+        return $response;
     }
 }
