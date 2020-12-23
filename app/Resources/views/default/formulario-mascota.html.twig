@@ -10,15 +10,12 @@ var picker = new Pikaday({
     field: $('.js-datepicker')[0],
     format: 'D/M/YYYY',
     toString(date, format) {
-        // you should do formatting based on the passed format,
-        // but we will just return 'D/M/YYYY' for simplicity
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     },
     parse(dateString, format) {
-        // dateString is the result of `toString` method
         const parts = dateString.split('/');
         const day = parseInt(parts[0], 10);
         const month = parseInt(parts[1], 10) - 1;
@@ -32,14 +29,11 @@ var picker = new Pikaday({
 {% block main %}
     {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
     <div class="container">
-        <h2>Crear Mascota</h2>
-        <p>
-            Formulario
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_errors(form) }}
-            {{ form_end(form) }}
-        </p> 
+        <h2>{{objetivo}} Mascota</h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
     </div>
 {% endblock %}
 
