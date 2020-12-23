@@ -8,10 +8,15 @@ ToDo List:
 - Configurar DB [LISTO]
 - Crear tablas  [LISTO]
 - Incorporar sistema de login
-- Integrar Bootstrap 4
-- Crear menú lateral
+- Integrar Bootstrap 4 [LISTO]
+- Crear menú lateral [LISTO]
 - CRUD de mascotas
-  - Usar formularios de Symfony
+  - Usar formularios de Symfony [LISTO]
   - Validar RUT
-  - Integrar plugin para fecha
-- Endpoint REST para consulta de mascotas
+  - Integrar plugin para fecha [LISTO]
+  - Formatear fechas [LISTO]
+  - Crear [LISTO]
+  - Listado [LISTO]
+  - Editar
+  - Eliminar
+- Endpoint REST para consulta de mascotas [LISTO]
