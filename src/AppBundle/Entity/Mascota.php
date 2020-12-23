@@ -87,13 +87,6 @@ class Mascota
     /**
      * @var string
      *
-     * @ORM\Column(name="humano_responsable", type="string", length=100)
-     */
-    private $humanoResponsable;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="observaciones", type="text")
      */
     private $observaciones;
@@ -329,30 +322,6 @@ class Mascota
     public function getEsterilizada()
     {
         return $this->esterilizada;
-    }
-
-    /**
-     * Set humanoResponsable
-     *
-     * @param string $humanoResponsable
-     *
-     * @return Mascota
-     */
-    public function setHumanoResponsable($humanoResponsable)
-    {
-        $this->humanoResponsable = $humanoResponsable;
-
-        return $this;
-    }
-
-    /**
-     * Get humanoResponsable
-     *
-     * @return string
-     */
-    public function getHumanoResponsable()
-    {
-        return $this->humanoResponsable;
     }
 
     /**
