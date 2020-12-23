@@ -36,3 +36,6 @@ services:
 
     AppBundle\DataFixtures\ORM\HumanoFixtures:
         tags: ['doctrine.fixture.orm']
+
+    AppBundle\Twig\AppExtension:
+        tags: ['twig.runtime']
