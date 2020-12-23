@@ -64,8 +64,11 @@ class DefaultController extends Controller
                 ],
             ])
             ->add('raza', TextType::class)
-            ->add('esterilizada', CheckboxType::class, [
-                'required' => false
+            ->add('esterilizada', ChoiceType::class, [
+                'choices'  => [
+                    'Sí' => true,
+                    'No' => false,
+                ],
             ])
             ->add('humano_id', EntityType::class, [
                 'label' => 'Humano responsable',
@@ -81,7 +84,8 @@ class DefaultController extends Controller
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $mascota = $form->getData();
-                $mascota->setFechaNacimiento(new \DateTime($request->request->get('fechaNacimiento')));
+                $fechaNacimiento = explode("/",$mascota->getFechaNacimiento());
+                $mascota->setFechaNacimiento(new \DateTime($fechaNacimiento[2].'-'.$fechaNacimiento[1].'-'.$fechaNacimiento[0]));
                 $mascota->setFechaRegistro(new \DateTime('NOW'));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($mascota);
@@ -96,8 +100,90 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('default/crear-mascota.html.twig', [
+        return $this->render('default/formulario-mascota.html.twig', [
             'form' => $form->createView(),
+            'objetivo' => 'Crear'
+        ]);
+    }
+
+    /**
+     * @Route("/editar-mascota/{id}", name="editar_mascota")
+     */
+    public function editarMascotaAction(Request $request, $id)
+    {
+        $repository = $this->getDoctrine()->getRepository(Mascota::class);
+        $mascota = $repository->find($id);
+
+        $form = $this->createFormBuilder($mascota)
+            ->add('chip', IntegerType::class, [
+                'disabled' => true
+            ])
+            ->add('nombre', TextType::class)
+            ->add('tipo', ChoiceType::class, [
+                'choices'  => [
+                    'Perro' => 1,
+                    'Gato' => 2,
+                    'Hurón' => 3,
+                    'Tortuga' => 4,
+                ],
+            ])
+            ->add('apellido', TextType::class, [
+                'required' => false
+            ])
+            ->add('sexo', ChoiceType::class, [
+                'choices'  => [
+                    'Macho' => 1,
+                    'Hembra' => 2,
+                ],
+            ])
+            ->add('color', TextType::class)
+            ->add('fechaNacimiento', TextType::class, [
+                'data' => $mascota->getFechaNacimiento()->format('d/m/Y'),
+                'attr' => [
+                    'class' => 'js-datepicker',
+                    'autocomplete' => "off"
+                ],
+            ])
+            ->add('raza', TextType::class)
+            ->add('esterilizada', ChoiceType::class, [
+                'choices'  => [
+                    'Sí' => true,
+                    'No' => false,
+                ],
+            ])
+            ->add('humano_id', EntityType::class, [
+                'disabled' => true,
+                'label' => 'Humano responsable',
+                'class' => 'AppBundle:Humano',
+                'choice_label' => 'nombre',
+            ])
+            ->add('observaciones', TextareaType::class)
+            ->add('save', SubmitType::class, ['label' => 'Modificar Mascota'])
+            ->getForm();
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request->request->get($form->getName()));
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $mascota = $form->getData();
+                $fechaNacimiento = explode("/",$mascota->getFechaNacimiento());
+                $mascota->setFechaNacimiento(new \DateTime($fechaNacimiento[2].'-'.$fechaNacimiento[1].'-'.$fechaNacimiento[0]));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($mascota);
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Mascota editada con éxito'
+                );
+    
+                return $this->redirectToRoute('listado_mascotas');
+            }
+        }
+
+        return $this->render('default/formulario-mascota.html.twig', [
+            'form' => $form->createView(),
+            'objetivo' => 'Modificar'
         ]);
     }
 
@@ -108,7 +194,7 @@ class DefaultController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $query = 'SELECT m.chip, m.nombre, m.apellido, m.tipo, m.sexo, m.raza, m.fecha_registro, 
+        $query = 'SELECT m.id, m.chip, m.nombre, m.apellido, m.tipo, m.sexo, m.raza, m.fecha_registro, 
             m.humano_id, h.nombre as nombre_humano, h.rut as rut_humano 
             FROM mascota m 
             JOIN humano h on m.humano_id = h.id;';

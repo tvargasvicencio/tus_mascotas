@@ -3,7 +3,7 @@
 {% block main %}
 <div class="container">
     <h2>Listado de Mascotas</h2>
-    <input class="form-control" id="buscador" type="text" placeholder="Búsqueda..">
+    <input class="form-control" id="buscador" type="text" placeholder="Búsqueda...">
     <br>
     <table class="table table-bordered">
         <thead>
@@ -29,7 +29,7 @@
                 <td>{{mascota.raza}}</td>
                 <td>{{mascota.fecha_registro|date("d/m/Y")}}</td>
                 <td>{{mascota.nombre_humano}}</td>
-                <td></td>
+                <td><a href="/editar-mascota/{{mascota.id}}"><i class="fa fa-edit"></i></a></td>
                 <td hidden>{{mascota.rut_humano}}</td>
             </tr>
             {% endfor %}
