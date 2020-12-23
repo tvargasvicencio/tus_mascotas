@@ -1,0 +1,51 @@
+{% extends 'default/index.html.twig' %}
+
+{% block main %}
+<div class="container">
+    <h2>Listado de Mascotas</h2>
+    <input class="form-control" id="buscador" type="text" placeholder="Búsqueda..">
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>N° Chip</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Sexo</th>
+                <th>Raza</th>
+                <th>Fecha Registro</th>
+                <th>Humano Resp.</th>
+                <th>Opciones</th>
+                <th hidden>Rut</th>
+            </tr>
+        </thead>
+        <tbody id="tablaMascotas">
+            {% for mascota in mascotas %}
+            <tr>
+                <td>{{mascota.chip}}</td>
+                <td>{{mascota.nombre ~ ' ' ~ mascota.apellido}}</td>
+                <td>{{tipoMascota(mascota.tipo)}}</td>
+                <td>{{sexoMascota(mascota.sexo)}}</td>
+                <td>{{mascota.raza}}</td>
+                <td>{{mascota.fecha_registro}}</td>
+                <td>{{mascota.nombre_humano}}</td>
+                <td></td>
+                <td hidden>{{mascota.rut_humano}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#buscador").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tablaMascotas tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
+</script>
+
+{% endblock %}

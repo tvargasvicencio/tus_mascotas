@@ -24,7 +24,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
         return $this->render('default/index.html.twig');
     }
 
@@ -91,6 +90,28 @@ class DefaultController extends Controller
 
         return $this->render('default/crear-mascota.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/listado-mascotas", name="listado_mascotas")
+     */
+    public function listadoMascotasAction(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $query = 'SELECT m.chip, m.nombre, m.apellido, m.tipo, m.sexo, m.raza, m.fecha_registro, 
+            m.humano_id, h.nombre as nombre_humano, h.rut as rut_humano 
+            FROM mascota m 
+            JOIN humano h on m.humano_id = h.id;';
+        
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute();
+
+        $mascotas = $statement->fetchAll();
+        
+        return $this->render('default/listado-mascotas.html.twig', [
+            'mascotas' => $mascotas
         ]);
     }
 }
