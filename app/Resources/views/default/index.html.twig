@@ -11,7 +11,7 @@
                                 <p class="nav-link pl-0 text-nowrap" ><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Mascotas registradas</span></p>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link pl-0" href="#"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Crear Mascota</span></a>
+                                <a class="nav-link pl-0" href="/crear-mascota"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Crear Mascota</span></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="#"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Listado Mascotas</span></a>
@@ -21,10 +21,22 @@
                 </nav>
             </aside>
             <main class="col bg-faded py-3 flex-grow-1">
+                {% block main %}
                 <h2>Tus Mascotas</h2>
                 <p>
                     Bienvenido!
                 </p> 
+                {% endblock %}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             </main>
         </div>
     </div>
