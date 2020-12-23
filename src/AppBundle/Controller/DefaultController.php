@@ -188,6 +188,31 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/eliminar-mascota/{id}", name="eliminar_mascota")
+     */
+    public function eliminarMascotaAction(Request $request, $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $mascota = $entityManager->find(Mascota::class, $id);
+
+        if ($mascota) {
+            $entityManager->remove($mascota);
+            $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Mascota eliminada con éxito'
+            );
+        }
+        else{
+            $this->addFlash(
+                'danger',
+                'Mascota no encontrada'
+            );
+        }
+        return $this->redirectToRoute('listado_mascotas');
+    }
+
+    /**
      * @Route("/listado-mascotas", name="listado_mascotas")
      */
     public function listadoMascotasAction(Request $request)

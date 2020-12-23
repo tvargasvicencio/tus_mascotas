@@ -17,6 +17,6 @@ ToDo List:
   - Formatear fechas [LISTO]
   - Crear [LISTO]
   - Listado [LISTO]
-  - Editar
-  - Eliminar
+  - Editar [LISTO]
+  - Eliminar [LISTO]
 - Endpoint REST para consulta de mascotas [LISTO]

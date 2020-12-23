@@ -29,12 +29,40 @@
                 <td>{{mascota.raza}}</td>
                 <td>{{mascota.fecha_registro|date("d/m/Y")}}</td>
                 <td>{{mascota.nombre_humano}}</td>
-                <td><a href="/editar-mascota/{{mascota.id}}"><i class="fa fa-edit"></i></a></td>
+                <td>
+                    <a href="/editar-mascota/{{mascota.id}}"><i class="fa fa-edit"></i></a>
+                    <a href="javascript:confirmarEliminar('{{mascota.id}}', '{{mascota.nombre}}','{{mascota.chip}}',
+                        '{{mascota.nombre_humano}}')"><i class="fa fa-trash"></i></a>
+                </td>
                 <td hidden>{{mascota.rut_humano}}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="eliminarModalLabel">Eliminar Mascota</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Se procederá a eliminar la mascota:</p><br>
+            <p id="nombreMascota"></p>
+            <p id="chipMascota"></p>
+            <p id="humanoMascota"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <a id="eliminarMascota" href="" type="button" class="btn btn-danger">Confirmar</a>
+        </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -46,6 +74,15 @@ $(document).ready(function(){
         });
     });
 });
+
+function confirmarEliminar(id, nombre, chip, humano){
+    $("#nombreMascota").html(nombre);
+    $("#chipMascota").html(chip);
+    $("#humanoMascota").html(humano);
+    $("#eliminarMascota").attr("href","/eliminar-mascota/"+id);
+    $('#eliminarModal').modal('show');
+}
+
 </script>
 
 {% endblock %}
