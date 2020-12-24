@@ -24,6 +24,6 @@ Las credenciales para ingresar son:
 - usuario: **admin**
 - contraseña: **helloworld**
 
-Se pueden consultar datos de mascota según su chip vía GET al endpoint:
-- /api/1.0/mascota/{chip}
-*No requiere autenticación
+Se pueden consultar datos de mascota según su chip vía **GET** al endpoint:
+- ``/api/1.0/mascota/{chip}``
+No requiere autenticación
