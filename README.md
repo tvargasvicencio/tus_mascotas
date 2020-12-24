@@ -7,7 +7,7 @@ ToDo List:
 
 - Configurar DB [LISTO]
 - Crear tablas  [LISTO]
-- Incorporar sistema de login
+- Incorporar sistema de login [LISTO]
 - Integrar Bootstrap 4 [LISTO]
 - Crear menú lateral [LISTO]
 - CRUD de mascotas
