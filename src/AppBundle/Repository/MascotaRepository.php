@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class MascotaRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByChip($chip)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT m
+                FROM AppBundle:Mascota m 
+                WHERE m.chip = '{$chip}'"
+            )
+            ->getArrayResult();
+    }
 }

@@ -201,8 +201,8 @@ class DefaultController extends Controller
      */
     public function eliminarMascotaAction(Request $request, $id)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $mascota = $entityManager->find(Mascota::class, $id);
+        $repository = $this->getDoctrine()->getRepository(Mascota::class);
+        $mascota = $repository->find($id);
 
         if ($mascota) {
             $entityManager->remove($mascota);
@@ -248,13 +248,9 @@ class DefaultController extends Controller
      */
     public function apiMascota($chip)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $query = "SELECT *
-            FROM mascota m 
-            WHERE m.chip = '{$chip}' ;";
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute();
-        $mascota = $statement->fetch();
+        $mascota = $this->getDoctrine()
+            ->getRepository(Mascota::class)
+            ->findByChip($chip);
 
         if ($mascota == null) {
             $response = new JsonResponse([
