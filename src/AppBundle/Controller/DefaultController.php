@@ -114,77 +114,86 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository(Mascota::class);
         $mascota = $repository->find($id);
 
-        $form = $this->createFormBuilder($mascota)
-            ->add('chip', IntegerType::class, [
-                'disabled' => true
-            ])
-            ->add('nombre', TextType::class)
-            ->add('tipo', ChoiceType::class, [
-                'choices'  => [
-                    'Perro' => 1,
-                    'Gato' => 2,
-                    'Hurón' => 3,
-                    'Tortuga' => 4,
-                ],
-            ])
-            ->add('apellido', TextType::class, [
-                'required' => false
-            ])
-            ->add('sexo', ChoiceType::class, [
-                'choices'  => [
-                    'Macho' => 1,
-                    'Hembra' => 2,
-                ],
-            ])
-            ->add('color', TextType::class)
-            ->add('fechaNacimiento', TextType::class, [
-                'data' => $mascota->getFechaNacimiento()->format('d/m/Y'),
-                'attr' => [
-                    'class' => 'js-datepicker',
-                    'autocomplete' => "off"
-                ],
-            ])
-            ->add('raza', TextType::class)
-            ->add('esterilizada', ChoiceType::class, [
-                'choices'  => [
-                    'Sí' => true,
-                    'No' => false,
-                ],
-            ])
-            ->add('humano_id', EntityType::class, [
-                'disabled' => true,
-                'label' => 'Humano responsable',
-                'class' => 'AppBundle:Humano',
-                'choice_label' => 'nombre',
-            ])
-            ->add('observaciones', TextareaType::class)
-            ->add('save', SubmitType::class, ['label' => 'Modificar Mascota'])
-            ->getForm();
+        if ($mascota) {
+            $form = $this->createFormBuilder($mascota)
+                ->add('chip', IntegerType::class, [
+                    'disabled' => true
+                ])
+                ->add('nombre', TextType::class)
+                ->add('tipo', ChoiceType::class, [
+                    'choices'  => [
+                        'Perro' => 1,
+                        'Gato' => 2,
+                        'Hurón' => 3,
+                        'Tortuga' => 4,
+                    ],
+                ])
+                ->add('apellido', TextType::class, [
+                    'required' => false
+                ])
+                ->add('sexo', ChoiceType::class, [
+                    'choices'  => [
+                        'Macho' => 1,
+                        'Hembra' => 2,
+                    ],
+                ])
+                ->add('color', TextType::class)
+                ->add('fechaNacimiento', TextType::class, [
+                    'data' => $mascota->getFechaNacimiento()->format('d/m/Y'),
+                    'attr' => [
+                        'class' => 'js-datepicker',
+                        'autocomplete' => "off"
+                    ],
+                ])
+                ->add('raza', TextType::class)
+                ->add('esterilizada', ChoiceType::class, [
+                    'choices'  => [
+                        'Sí' => true,
+                        'No' => false,
+                    ],
+                ])
+                ->add('humano_id', EntityType::class, [
+                    'disabled' => true,
+                    'label' => 'Humano responsable',
+                    'class' => 'AppBundle:Humano',
+                    'choice_label' => 'nombre',
+                ])
+                ->add('observaciones', TextareaType::class)
+                ->add('save', SubmitType::class, ['label' => 'Modificar Mascota'])
+                ->getForm();
 
-        if ($request->isMethod('POST')) {
-            $form->submit($request->request->get($form->getName()));
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                $mascota = $form->getData();
-                $fechaNacimiento = explode("/",$mascota->getFechaNacimiento());
-                $mascota->setFechaNacimiento(new \DateTime($fechaNacimiento[2].'-'.$fechaNacimiento[1].'-'.$fechaNacimiento[0]));
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($mascota);
-                $entityManager->flush();
+            if ($request->isMethod('POST')) {
+                $form->submit($request->request->get($form->getName()));
+        
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $mascota = $form->getData();
+                    $fechaNacimiento = explode("/",$mascota->getFechaNacimiento());
+                    $mascota->setFechaNacimiento(new \DateTime($fechaNacimiento[2].'-'.$fechaNacimiento[1].'-'.$fechaNacimiento[0]));
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($mascota);
+                    $entityManager->flush();
 
-                $this->addFlash(
-                    'success',
-                    'Mascota editada con éxito'
-                );
-    
-                return $this->redirectToRoute('listado_mascotas');
+                    $this->addFlash(
+                        'success',
+                        'Mascota editada con éxito'
+                    );
+        
+                    return $this->redirectToRoute('listado_mascotas');
+                }
             }
-        }
 
-        return $this->render('default/formulario-mascota.html.twig', [
-            'form' => $form->createView(),
-            'objetivo' => 'Modificar'
-        ]);
+            return $this->render('default/formulario-mascota.html.twig', [
+                'form' => $form->createView(),
+                'objetivo' => 'Modificar'
+            ]);
+        }
+        else{
+            $this->addFlash(
+                'danger',
+                'Mascota no encontrada'
+            );
+            return $this->redirectToRoute('listado_mascotas');
+        }
     }
 
     /**
